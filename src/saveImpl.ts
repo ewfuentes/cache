@@ -56,6 +56,13 @@ async function saveImpl(stateProvider: IStateProvider): Promise<number | void> {
             Inputs.EnableCrossOsArchive
         );
 
+        const skipCacheWrite = core.getInput(Inputs.SkipCacheWrite).toLowerCase() === "true";
+        if (skipCacheWrite) {
+            core.info(`Skipping cache save`);
+            return;
+        }
+
+
         cacheId = await cache.saveCache(
             cachePaths,
             primaryKey,

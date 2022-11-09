@@ -39418,6 +39418,11 @@ function saveImpl(stateProvider) {
                 required: true
             });
             const enableCrossOsArchive = utils.getInputAsBool(constants_1.Inputs.EnableCrossOsArchive);
+            const skipCacheWrite = core.getInput(constants_1.Inputs.SkipCacheWrite).toLowerCase() === "true";
+            if (skipCacheWrite) {
+                core.info(`Skipping cache save`);
+                return;
+            }
             cacheId = yield cache.saveCache(cachePaths, primaryKey, { uploadChunkSize: utils.getInputAsInt(constants_1.Inputs.UploadChunkSize) }, enableCrossOsArchive);
             if (cacheId != -1) {
                 core.info(`Cache saved with key: ${primaryKey}`);
@@ -46053,7 +46058,8 @@ var Inputs;
     Inputs["UploadChunkSize"] = "upload-chunk-size";
     Inputs["EnableCrossOsArchive"] = "enableCrossOsArchive";
     Inputs["FailOnCacheMiss"] = "fail-on-cache-miss";
-    Inputs["LookupOnly"] = "lookup-only"; // Input for cache, restore action
+    Inputs["LookupOnly"] = "lookup-only";
+    Inputs["SkipCacheWrite"] = "skip-cache-write";
 })(Inputs = exports.Inputs || (exports.Inputs = {}));
 var Outputs;
 (function (Outputs) {
